@@ -12,6 +12,15 @@ Puts or deletes a file from a MongoDB GridFS.
 $ ansible-galaxy install koichirok.mongodb_gridfs-module
 ```
 
+```yaml
+# playbook.yml
+
+- hosts: default
+  roles:
+  # After you call this role, you can use this module.
+  - koichirok.mongodb_gridfs-module
+```
+
 ## Synopsis
  Puts or deletes a file from a MongoDB GridFS.
 
