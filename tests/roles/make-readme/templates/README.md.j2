@@ -1,0 +1,89 @@
+{% if heading is defined %}
+# {{ heading }}
+{% endif %}
+{#
+[![Travis](https://travis-ci.org/{{ username }}/ansible-module-{{ module_name }}.svg?branch=master)](https://travis-ci.org/{{ username }}/ansible-module-{{ module_name }})
+[![Ansible Module](https://img.shields.io/ansible/role/14945.svg?label=module)](https://galaxy.ansible.com/{{ username }}/{{ module_name }}-module/)
+#}
+
+{% for doc in modules.results %}
+{{ doc['short_description'] | markdown_ify }}
+
+{% if requirements is defined %}
+## Requirements
+
+{% for req in requirements %}
+* {{ req | markdown_ify }}
+{% endfor %}
+{% endif %}
+
+## Install
+
+```
+$ ansible-galaxy install {{ username }}.{{ module_name }}-module
+```
+{#
+```yaml
+# playbook.yml
+
+- hosts: default
+  roles:
+  # After you call this role, you can use this module.
+  - {{ username }}.{{ module_name }}-module
+```
+#}
+
+## Synopsis
+{% for each in doc['description'] %} {{ each | markdown_ify }}
+{% endfor %}
+
+## Options
+
+| Parameter     | required    | default  | choices    | comments |
+| ------------- |-------------| ---------|----------- |--------- |
+{% for k,v in doc.items() %}
+{% if k == 'options' %}
+{% for option,values in v.items() %}
+| {{ option }}  |  {% if values.get('required') != None %} {{ values['required'] | replace('True','yes') | replace('False','no') }} {% endif %} | {% if values.get('default') != None %} {{ values['default'] | replace('None','')}} {% endif %} |{% if values.get('choices') != None %} <ul>{% for each in values['choices'] %} <li>{{ each }}</li> {% endfor %}</ul>{% endif %} | {% if values.get('description') != None %}{% for each in values['description'] %} {{ each | markdown_ify }} {% endfor %}{% endif %} |
+{% endfor %}
+{% endif %}
+{% endfor %}
+
+{% if doc['examples'] is defined %}
+
+## Examples
+
+```
+{% for each in doc['examples'] %}
+{{ each | replace('{#','{{') | replace('#}','}}') }}
+{% endfor %}
+```
+{% endif %}
+
+## Return Values
+
+{% if doc['returndocs'] is defined and doc['returndocs'] %}
+
+| name | description | returned | type | sample |
+| ---- |-------------| ---------|----- |------- |
+{% for k,v in (doc['returndocs']|from_yaml).items() %}
+| {{ k }} | {{ v['description'] | markdown_ify }}  | {{ v['returned'] }}  | {{ v['type'] }} | {{ v['sample'] }} |
+{% endfor %}
+
+{% endif %}
+{% for k,v in doc.items() %}
+{% if k == 'notes' %}
+## Notes
+
+{% for note in v %}
+- {{ note | markdown_ify }}
+
+{% endfor -%}
+{% endif -%}
+{% endfor -%}
+
+{% endfor -%}
+
+## License
+
+{{ galaxy_info.license }}

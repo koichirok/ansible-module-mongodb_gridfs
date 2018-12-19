@@ -1,0 +1,26 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+    clean: true
+    heading: '{{ module_name }}-module - Ansible mongodb_gridfs module'
+    requirements:
+      - 'PyMongo package'
+    module_name: mongodb_gridfs
+
+  tasks:
+    - name: 'clone ansible-webdocs repo.'
+      git: repo=https://github.com/koichirok/ansible-webdocs.git
+           dest=roles/ansible-webdocs depth=1
+
+    - name: load ansible-webdocs
+      include_role:
+        name: ansible-webdocs
+      tags: make-readme
+
+    - name: run make-readme role
+      include_role:
+        name: make-readme
+      tags: make-readme
