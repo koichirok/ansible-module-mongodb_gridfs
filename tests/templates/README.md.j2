@@ -1,6 +1,4 @@
-{% if heading is defined %}
 # Ansible {{ module_name }} module
-{% endif %}
 {#
 [![Travis](https://travis-ci.org/{{ username }}/ansible-module-{{ module_name }}.svg?branch=master)](https://travis-ci.org/{{ username }}/ansible-module-{{ module_name }})
 [![Ansible Module](https://img.shields.io/ansible/role/14945.svg?label=module)](https://galaxy.ansible.com/{{ username }}/{{ module_name }}-module/)
@@ -22,7 +20,7 @@
 ```
 $ ansible-galaxy install {{ username }}.{{ module_name }}-module
 ```
-{#
+
 ```yaml
 # playbook.yml
 
@@ -31,7 +29,6 @@ $ ansible-galaxy install {{ username }}.{{ module_name }}-module
   # After you call this role, you can use this module.
   - {{ username }}.{{ module_name }}-module
 ```
-#}
 
 ## Synopsis
 {% for each in doc['description'] %} {{ each | markdown_ify }}

@@ -4,11 +4,10 @@
   gather_facts: no
 
   vars:
-    clean: true
     module_name: mongodb_gridfs
+    username: koichirok
     requirements:
       - 'PyMongo package'
-
   tasks:
     - name: 'clone ansible-webdocs repo.'
       git: repo=https://github.com/koichirok/ansible-webdocs.git
@@ -18,6 +17,17 @@
       include_role:
         name: ansible-webdocs
 
-    - name: run make-readme role
-      include_role:
-        name: make-readme
+    - name: get docs and examples for modules
+      local_action:
+        module: ansible_docstring
+        path: '{{playbook_dir}}/../library/'
+      register: modules
+
+    - name: load meta info
+      include_vars:
+        file: '{{playbook_dir}}/../meta/main.yml'
+
+    - name: build web/markdown ansible docs
+      template:
+        src: README.md.j2
+        dest: '{{playbook_dir}}/../README.md'
