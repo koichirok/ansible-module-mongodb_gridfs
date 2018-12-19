@@ -253,7 +253,7 @@ def main():
             dest=dict(type='path', required=True),
             state=dict(default='present', choices=['absent', 'present']),
         ),
-        required_one_of=[
+        required_if=[
             ('state', 'present', ['content','src'], True),
         ],
         mutually_exclusive=[('content', 'src')],
