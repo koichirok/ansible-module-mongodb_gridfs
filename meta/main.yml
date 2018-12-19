@@ -1,4 +1,5 @@
 galaxy_info:
+  role_name: mongodb_gridfs
   author: KIKUCHI Koichiro
   description: ansible module to add/remove files from MongoDB GridFS
   license: GPLv3
