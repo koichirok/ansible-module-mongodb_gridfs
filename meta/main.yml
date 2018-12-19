@@ -1,11 +1,17 @@
 galaxy_info:
   author: KIKUCHI Koichiro
-  description: mongodb_gridfs module
+  description: ansible module to add/remove files from MongoDB GridFS
   license: GPLv3
 
   min_ansible_version: 2.4
 
-  # platforms:
+  platforms:
+    - name: GenericLinux
+      versions:
+      - any
+    - name: GenericBSD
+      versions:
+      - any
 
   galaxy_tags:
     - database
