@@ -5,10 +5,9 @@
 
   vars:
     clean: true
-    heading: '{{ module_name }}-module - Ansible mongodb_gridfs module'
+    module_name: mongodb_gridfs
     requirements:
       - 'PyMongo package'
-    module_name: mongodb_gridfs
 
   tasks:
     - name: 'clone ansible-webdocs repo.'
@@ -18,9 +17,7 @@
     - name: load ansible-webdocs
       include_role:
         name: ansible-webdocs
-      tags: make-readme
 
     - name: run make-readme role
       include_role:
         name: make-readme
-      tags: make-readme

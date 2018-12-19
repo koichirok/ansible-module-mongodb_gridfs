@@ -1,5 +1,5 @@
 {% if heading is defined %}
-# {{ heading }}
+# Ansible {{ module_name }} module
 {% endif %}
 {#
 [![Travis](https://travis-ci.org/{{ username }}/ansible-module-{{ module_name }}.svg?branch=master)](https://travis-ci.org/{{ username }}/ansible-module-{{ module_name }})
@@ -39,23 +39,22 @@ $ ansible-galaxy install {{ username }}.{{ module_name }}-module
 
 ## Options
 
+{% if 'options' in doc %}
+
 | Parameter     | required    | default  | choices    | comments |
 | ------------- |-------------| ---------|----------- |--------- |
-{% for k,v in doc.items() %}
-{% if k == 'options' %}
-{% for option,values in v.items() %}
-| {{ option }}  |  {% if values.get('required') != None %} {{ values['required'] | replace('True','yes') | replace('False','no') }} {% endif %} | {% if values.get('default') != None %} {{ values['default'] | replace('None','')}} {% endif %} |{% if values.get('choices') != None %} <ul>{% for each in values['choices'] %} <li>{{ each }}</li> {% endfor %}</ul>{% endif %} | {% if values.get('description') != None %}{% for each in values['description'] %} {{ each | markdown_ify }} {% endfor %}{% endif %} |
+{% for option in doc.options.keys() | sort %}
+| {{ option }}  |  {% if doc.options[option].get('required') != None %} {{ doc.options[option]['required'] | replace('True','yes') | replace('False','no') }} {% endif %} | {% if doc.options[option].get('default') != None %} {{ doc.options[option]['default'] | replace('None','')}} {% endif %} |{% if doc.options[option].get('choices') != None %} <ul>{% for each in doc.options[option]['choices'] %} <li>{{ each }}</li> {% endfor %}</ul>{% endif %} | {% if doc.options[option].get('description') != None %}{% for each in doc.options[option]['description'] %} {{ each | markdown_ify }} {% endfor %}{% endif %} |
 {% endfor %}
 {% endif %}
-{% endfor %}
 
 {% if doc['examples'] is defined %}
 
 ## Examples
 
 ```
-{% for each in doc['examples'] %}
-{{ each | replace('{#','{{') | replace('#}','}}') }}
+{% for example in doc['examples'] %}
+{{ example | replace('{#','{{') | replace('#}','}}') }}
 {% endfor %}
 ```
 {% endif %}
