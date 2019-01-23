@@ -167,16 +167,16 @@ def load_mongocnf():
     return creds
 
 
-def connect(params):
-    login_user = params['login_user']
-    login_password = params['login_password']
-    login_host = params['login_host']
-    login_port = params['login_port']
-    login_database = params['login_database']
-    replica_set = params['replica_set']
-    db_name = params['database']
-    collection = params['collection']
-    ssl = params['ssl']
+def connect(module):
+    login_user = module.params['login_user']
+    login_password = module.params['login_password']
+    login_host = module.params['login_host']
+    login_port = module.params['login_port']
+    login_database = module.params['login_database']
+    replica_set = module.params['replica_set']
+    db_name = module.params['database']
+    collection = module.params['collection']
+    ssl = module.params['ssl']
 
     if login_database is None:
         login_database = db_name
@@ -269,7 +269,7 @@ def main():
     replace = module.params['replace']
 
     try:
-        fs = connect(module.params)
+        fs = connect(module)
     except Exception as e:
         module.fail_json(msg='unable to connect to database: %s' % to_native(e), exception=traceback.format_exc())
 
